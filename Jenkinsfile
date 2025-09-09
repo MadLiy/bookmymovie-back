@@ -1,9 +1,9 @@
 pipeline {
     agent { label 'build-heavy' }
     stages {
-        stage('Test') {
+        stage('Build Back') {
             steps {
-                echo "Hello from Back pipeline"
+                sh 'mvn clean install'
             }
         }
     }
