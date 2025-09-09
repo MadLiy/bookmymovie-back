@@ -3,6 +3,9 @@ pipeline {
     stages {
         stage('Build Back') {
             steps {
+                echo "Build back..."
+            }
+            steps {
                 sh 'mvn clean install'
             }
         }
