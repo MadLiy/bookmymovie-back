@@ -1,14 +1,32 @@
 pipeline {
-    agent { label 'build-heavy' }
+    agent any
+
     stages {
-        stage('Build Back') {
+        stage('Checkout') {
             steps {
-                echo "Build back..."
+                checkout scm
             }
-        stage('Maven Clean')
+        }
+
+        stage('Build') {
             steps {
                 sh 'mvn clean install'
             }
+        }
+
+        stage('Tests') {
+            steps {
+                sh 'mvn test'
+            }
+        }
+    }
+
+    post {
+        success {
+            echo "✅ Backend build & tests succeeded"
+        }
+        failure {
+            echo "❌ Backend pipeline failed"
         }
     }
 }
