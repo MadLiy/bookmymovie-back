@@ -4,9 +4,9 @@
   "description": "test",
   "main": "index.js",
   "scripts": {
+    "build": "nest build",
     "start": "nest start",
     "start:dev": "nest start --watch",
-    "build": "nest build",
     "test": "jest"
   },
   "repository": {
