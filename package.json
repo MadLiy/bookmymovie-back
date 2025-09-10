@@ -1,0 +1,22 @@
+{
+  "name": "back",
+  "version": "1.0.0",
+  "description": "test",
+  "main": "index.js",
+  "scripts": {
+    "test": "jest"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/MadLiy/bookmymovie-back.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/MadLiy/bookmymovie-back/issues"
+  },
+  "homepage": "https://github.com/MadLiy/bookmymovie-back#readme",
+  "devDependencies": {
+    "jest-junit": "^16.0.0"
+  }
+}

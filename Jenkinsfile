@@ -1,5 +1,8 @@
 pipeline {
     agent any
+    tools {
+        node 'NodeJS 20.19.5'
+    }
     parameters {
         choice(name: 'env', choices: ['dev', 'prod'], description: 'Select environment')
     }
@@ -25,17 +28,39 @@ pipeline {
             }
         }
 
+        stage('install dependencies') {
+            steps {
+                sh 'npm install'
+            }
+        }
+
         stage('Build') {
             steps {
-                sh 'mvn clean install'
+                sh 'npm run build'
             }
         }
 
         stage('Tests') {
             steps {
-                sh 'mvn test'
+                sh 'npm run test -- --ci --reporters=jest-junit'
+            }
+            post {
+                always {
+                    junit 'junit.xml'
+                }
             }
         }
+        
+        stage('SonarBookmymovie Analysis')
+            steps {
+                script {
+                    def mvnHome = tool 'NodeJS 20.19.5'
+                    withSonarQubeEnv('SonarBookmymovie') {
+                        sh "${mvnHome}/bin/npx sonar-scanner -Dsonar.projectKey=Bookmymovie -Dsonar.projectName='Bookmymovie'"
+                    }
+                }
+            }
+
     }
 
     post {
