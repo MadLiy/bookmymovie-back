@@ -62,9 +62,27 @@ pipeline {
                             -Dsonar.token=sqp_5d5a2084e75eca2d0ce78c006a6176207ab2fd4e \
                             -Dsonar.projectKey=Bookmymovie"
                     }
+
+                    timeout(time: 5, unit: 'MINUTES') {
+                        def qg = waitForQualityGate()
+                        if (qg.status != 'OK') {
+                            error "Pipeline échoué à cause du Quality Gate : ${qg.status}"
+                        }
+                    }
                 }
             }
+        }
 
+        stage('Security') {
+            steps {
+                sh '''
+                    # Build your project image
+                    docker build -t bookmymovie-back:latest .
+
+                    # Scan the image with Trivy
+                    trivy image --severity CRITICAL --exit-code 1 bookmymovie-back:latest
+                '''
+            }
         }
     }
 }
