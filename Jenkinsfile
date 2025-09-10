@@ -1,7 +1,7 @@
 pipeline {
     agent any
     tools {
-        NodeJS ' NodeJS 20.19.5'
+        NodeJS 'NodeJS 20.19.5'
     }
     parameters {
         choice(name: 'env', choices: ['dev', 'prod'], description: 'Select environment')
