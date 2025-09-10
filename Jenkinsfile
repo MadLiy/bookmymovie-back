@@ -43,11 +43,11 @@ pipeline {
 
         stage('Tests') {
             steps {
-                sh 'npm run test -- --ci --reporters=jest-junit'
+                sh 'npm run test -- --ci'
             }
             post {
                 always {
-                    junit 'junit.xml'
+                    junit 'reports/junit/junit.xml'
                 }
             }
         }
