@@ -56,7 +56,7 @@ pipeline {
                 script {
                     def mvnHome = tool 'NodeJS 20.19.5'
                     withSonarQubeEnv('SonarBookmymovie') {
-                        sh "${mvnHome}/bin/npx sonar-scanner -Dsonar.projectKey=Bookmymovie -Dsonar.projectName='Bookmymovie'"
+                        sh "npx sonar-scanner -Dsonar.projectKey=Bookmymovie -Dsonar.projectName='Bookmymovie' -Dsonar.sources=src -Dsonar.language=ts"
                     }
                 }
             }
