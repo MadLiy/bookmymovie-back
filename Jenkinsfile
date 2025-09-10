@@ -55,9 +55,9 @@ pipeline {
         stage('SonarBookmymovie Analysis') {
             steps {
                 script {
-                    def mvnHome = tool 'NodeJS 20.19.5'
+                    def scannerHome = tool 'SonarQube Scanner 7.2.0'
                     withSonarQubeEnv('SonarBookmymovie') {
-                        sh "sonar \
+                        sh "${scannerHome}/bin/sonar-scanner \
                             -Dsonar.host.url=http://localhost:9000 \
                             -Dsonar.token=sqp_5d5a2084e75eca2d0ce78c006a6176207ab2fd4e \
                             -Dsonar.projectKey=Bookmymovie"
