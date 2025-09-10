@@ -5,6 +5,7 @@ pipeline {
             steps {
                 echo "Build back..."
             }
+        stage('Maven Clean')
             steps {
                 sh 'mvn clean install'
             }
