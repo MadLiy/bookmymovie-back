@@ -51,7 +51,7 @@ pipeline {
             }
         }
         
-        stage('SonarBookmymovie Analysis')
+        stage('SonarBookmymovie Analysis') {
             steps {
                 script {
                     def mvnHome = tool 'NodeJS 20.19.5'
@@ -61,14 +61,15 @@ pipeline {
                 }
             }
 
-    }
-
-    post {
-        success {
-            echo "✅ Backend build & tests succeeded"
         }
-        failure {
-            echo "❌ Backend pipeline failed"
+
+        post {
+            success {
+                echo "✅ Backend build & tests succeeded"
+            }
+            failure {
+                echo "❌ Backend pipeline failed"
+            }
         }
     }
 }
