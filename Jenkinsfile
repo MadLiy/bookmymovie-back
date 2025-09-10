@@ -62,14 +62,5 @@ pipeline {
             }
 
         }
-
-        post {
-            success {
-                echo "✅ Backend build & tests succeeded"
-            }
-            failure {
-                echo "❌ Backend pipeline failed"
-            }
-        }
     }
 }
