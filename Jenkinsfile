@@ -64,23 +64,35 @@ pipeline {
             }
         }
 
-        stage('Quality Gate') {
+        stage('Quality gate') {
             steps {
-                timeout(time: 10, unit: 'MINUTES') {
+                timeout(time: 1, unit: 'HOURS') {
                     waitForQualityGate abortPipeline: true
+                }
+            }
+        }
+
+        stage("Vulnerability")
+            steps {
+                sh 'npm audit'
+            }
+
+        stage('Initialize' ){
+            steps {
+                script {
+                    def dockerHome = tool 'Docker-pipeline'
+                    env.PATH = "${dockerHome}/bin:${env.PATH}"
+                    sh 'docker -v'
                 }
             }
         }
 
         stage('Security') {
             steps {
-                sh '''
-                    # Build your project image
-                    docker build -t bookmymovie-back:latest .
-
-                    # Scan the image with Trivy
-                    trivy image --severity CRITICAL --exit-code 1 bookmymovie-back:latest
-                '''
+                //sh 'docker -v'
+                //sh 'trivy image python:3.4-alpine'
+                sh 'docker build -t bookmymovie-back:latest .'
+                sh 'trivy image --severity CRITICAL --exit-code 1 bookmymovie-back:latest'
             }
         }
     }
