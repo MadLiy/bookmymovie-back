@@ -81,27 +81,16 @@ pipeline {
             }
         }
 
-        stage('Initialize' ){
-            steps {
-                script {
-                    def dockerHome = tool 'Docker-pipeline'
-                    env.PATH = "${dockerHome}/bin:${env.PATH}"
-                    /* sh 'chown -R 1000 ${dockerHome}/bin'
-                    sh 'sudo gpasswd -a jenkins docker' */
-                    def image = docker.image('aquasec/trivy:latest')
-                    image.pull()
-                }
-            }
-        }
-
         stage('Security') {
             steps {
                 script {
-                sh '''
-                    docker run --rm \
-                    -v /var/run/docker.sock:/var/run/docker.sock \
-                    aquasec/trivy:latest image --severity CRITICAL --exit-code 1 bookmymovie-back:latest
-                '''
+                    sh '''
+                        docker run --rm \
+                        -v /var/run/docker.sock:/var/run/docker.sock \
+                        aquasec/trivy:latest image \
+                        --severity CRITICAL \
+                        --exit-code 1 bookmymovie-back:latest
+                    '''
                 }
             }
         }
