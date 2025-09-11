@@ -72,10 +72,11 @@ pipeline {
             }
         }
 
-        stage("Vulnerability")
+        stage("Vulnerability"){
             steps {
                 sh 'npm audit'
             }
+        }
 
         stage('Initialize' ){
             steps {
