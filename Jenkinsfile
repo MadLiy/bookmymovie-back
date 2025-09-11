@@ -2,6 +2,7 @@ pipeline {
     agent any
     tools {
         nodejs 'NodeJS 20.19.5'
+        dockerTool 'Docker-pipeline'
     }
     parameters {
         choice(name: 'env', choices: ['dev', 'prod'], description: 'Select environment')
@@ -85,17 +86,23 @@ pipeline {
                 script {
                     def dockerHome = tool 'Docker-pipeline'
                     env.PATH = "${dockerHome}/bin:${env.PATH}"
-                    sh 'docker -v'
+                    /* sh 'chown -R 1000 ${dockerHome}/bin'
+                    sh 'sudo gpasswd -a jenkins docker' */
+                    def image = docker.image('aquasec/trivy:latest')
+                    image.pull()
                 }
             }
         }
 
         stage('Security') {
             steps {
-                //sh 'docker -v'
-                //sh 'trivy image python:3.4-alpine'
-                sh 'docker build -t bookmymovie-back:latest .'
-                sh 'trivy image --severity CRITICAL --exit-code 1 bookmymovie-back:latest'
+                script {
+                sh '''
+                    docker run --rm \
+                    -v /var/run/docker.sock:/var/run/docker.sock \
+                    aquasec/trivy:latest image --severity CRITICAL --exit-code 1 bookmymovie-back:latest
+                '''
+                }
             }
         }
     }
